@@ -11,14 +11,15 @@ export const test = base.extend<{
   authPage: async ({ page }, use) => {
     const authPage = new AuthorizationPage(page);
     await authPage.goto();
-    await authPage.login('standard_user', 'secret_sauce');
-    await authPage.expectLoginSuccess();
+    await authPage.loginWithStandardUser(); // ✅ читаемо, абстрагирует детали логина
     await use(authPage);
   },
+
   inventoryPage: async ({ page }, use) => {
     const inventoryPage = new InventoryPage(page);
     await use(inventoryPage);
   },
+
   cartPage: async ({ page }, use) => {
     const cartPage = new CartPage(page);
     await use(cartPage);

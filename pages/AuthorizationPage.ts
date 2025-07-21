@@ -46,6 +46,14 @@ export class AuthorizationPage {
     }
   }
 
+  async loginWithStandardUser() {
+    await this.usernameInput.fill('standard_user');
+    await this.passwordInput.fill('secret_sauce');
+    await this.loginButton.click();
+    await expect(this.page).toHaveURL('https://www.saucedemo.com/inventory.html', { timeout: 10000 }); // 👇 Явное ожидание URL
+    await expect(this.inventoryContainer).toBeVisible({ timeout: 10000 }); // 👇 Ждём, когда появятся товары (или контейнер)
+  }
+
   async logout() {
     await this.menuButton.click();
     await this.logoutLink.click();
