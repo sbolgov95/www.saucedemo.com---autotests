@@ -1,4 +1,4 @@
-import { test, expect } from '../Fixtures/AuthFixtures';
+import { test } from '../Fixtures/AuthFixtures';
 
 import { PASSWORD, USERS } from '../Fixtures/UserData';
 
