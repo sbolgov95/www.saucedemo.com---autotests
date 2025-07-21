@@ -1,10 +1,5 @@
 import { test } from '../fixtures/CartFixtures';
 
-test.beforeEach(async ({ authPage }) => {
-  await authPage.login('standard_user', 'secret_sauce');
-  await authPage.expectLoginSuccess();
-});
-
 test.describe('Начальное состояние корзины', () => {
   test('Корзина пуста по умолчанию', async ({ cartPage }) => {
     await cartPage.openCart();

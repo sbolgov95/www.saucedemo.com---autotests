@@ -9,6 +9,8 @@ export const test = base.extend<Fixtures>({
     authPage: async ({ page }, use) => {
         const authPage = new AuthorizationPage(page);
         await authPage.goto();
+        await authPage.login('standard_user', 'secret_sauce');
+        await authPage.expectLoginSuccess();
         await use(authPage);
     },
 });
