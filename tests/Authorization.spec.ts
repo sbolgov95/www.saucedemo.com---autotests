@@ -1,31 +1,12 @@
-import { test } from '@playwright/test';
-import { AuthorizationPage } from '../pages/AuthorizationPage';
-
-const PASSWORD = 'secret_sauce';
-
-const USERS = [
-  { username: 'standard_user', shouldSucceed: true },
-  { username: 'locked_out_user', shouldSucceed: false, expectedError: 'Epic sadface: Sorry, this user has been locked out.' },
-  { username: 'problem_user', shouldSucceed: true },
-  { username: 'performance_glitch_user', shouldSucceed: true },
-  { username: 'error_user', shouldSucceed: true },
-  { username: 'visual_user', shouldSucceed: true }
-];
+import { test } from '../fixtures/AuthFixtures';
+import { PASSWORD, USERS } from '../fixtures/userData';
 
 const successfulUsers = USERS.filter(u => u.shouldSucceed);
 const failedUsers = USERS.filter(u => !u.shouldSucceed);
 
-let authPage: AuthorizationPage;
-
-test.beforeEach(async ({ page }) => {
-  authPage = new AuthorizationPage(page);
-  await authPage.goto();
-});
-
-// ✅ Успешная авторизация
 test.describe('✅ Успешная авторизация', () => {
   for (const user of successfulUsers) {
-    test(`Успешная авторизация для "${user.username}"`, async () => {
+    test(`Успешная авторизация для "${user.username}"`, async ({ authPage }) => {
       await authPage.login(user.username, PASSWORD);
       await authPage.expectLoginSuccess();
       await authPage.logout();
@@ -33,10 +14,9 @@ test.describe('✅ Успешная авторизация', () => {
   }
 });
 
-// ❌ Ошибка авторизации
 test.describe('❌ Ошибка авторизации', () => {
   for (const user of failedUsers) {
-    test(`Неуспешная авторизация для "${user.username}"`, async () => {
+    test(`Неуспешная авторизация для "${user.username}"`, async ({ authPage }) => {
       await authPage.login(user.username, PASSWORD);
       await authPage.expectLoginFailure(user.expectedError);
     });
