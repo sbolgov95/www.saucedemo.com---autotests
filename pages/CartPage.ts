@@ -33,6 +33,14 @@ export class CartPage {
         await this.backButton.click();
     }
 
+    async removeFirstItem() {
+        await this.page.locator('[data-test^="remove-"]').first().click();
+    }
+
+    async expectCartIsEmpty() {
+        await expect(this.cartBadge).toHaveCount(0);
+    }
+
     async expectOnInventoryPage() {
         await expect(this.page).toHaveURL(INVENTORY_URL);
     }

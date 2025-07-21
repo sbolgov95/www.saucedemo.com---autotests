@@ -1,10 +1,9 @@
-import { test, expect } from '../fixtures/CartFixtures';
+import { test } from '../fixtures/CartFixtures';
 
 test.beforeEach(async ({ authPage }) => {
   await authPage.login('standard_user', 'secret_sauce');
   await authPage.expectLoginSuccess();
 });
-
 
 test.describe('Начальное состояние корзины', () => {
   test('Корзина пуста по умолчанию', async ({ cartPage }) => {
@@ -22,8 +21,7 @@ test.describe('Добавление товаров в корзину', () => {
   });
 
   test('Добавление нескольких товаров и проверка корзины', async ({ inventoryPage, cartPage }) => {
-    await inventoryPage.addItemByIndex(1);
-    await inventoryPage.addItemByIndex(2);
+    await inventoryPage.addItemsByIndexes([1, 2]);
     await cartPage.expectCartCount(2);
     await cartPage.openCart();
     await cartPage.expectItemCount(2);
@@ -34,10 +32,9 @@ test.describe('Удаление товаров из корзины', () => {
   test('Удаление одного товара', async ({ inventoryPage, cartPage }) => {
     await inventoryPage.addItemByIndex(0);
     await cartPage.openCart();
-    const removeButton = cartPage.page.locator('[data-test^="remove-"]');
-    await removeButton.click();
+    await cartPage.removeFirstItem();
     await cartPage.expectItemCount(0);
-    await expect(cartPage.cartBadge).toHaveCount(0);
+    await cartPage.expectCartIsEmpty();
   });
 });
 

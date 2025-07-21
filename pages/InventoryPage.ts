@@ -12,4 +12,10 @@ export class InventoryPage {
     async addItemByIndex(index: number) {
         await this.inventoryItems.nth(index).click();
     }
+
+    async addItemsByIndexes(indexes: number[]) {
+        for (const index of indexes) {
+            await this.addItemByIndex(index);
+        }
+    }
 }
